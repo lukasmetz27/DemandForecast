@@ -21,8 +21,23 @@ class DataIngestion:
         logging.info("Enter dataingestion component")
         try:
             df = pd.read_csv("notebooks/data/demand_forecasting.csv")
+            logging.info("Read the dataset as dataframe")
 
-        except:
-            pass
+            os.makedirs(os.pathdirname(self.ingestion_config.train_data_path), exist_ok=True)
+            df.to_csv(self.ingestion_config.train_data_path,index=False, header=True)
+            logging.info("train test split initiated")
+            train_set,test_set = train_test_split(df,test_size=0.2,random_state=42)
+
+            train_set.to_csv(self.ingestion_config.train_data_path,index=False, header=True)
+            test_set.to_csv(self.ingestion_config.test_data_path,index=False, header=True)
+
+            logging.info("ingestion of train and test is completed")
+
+            return(
+                self.ingestion_config.train_data_path,
+                self.ingestion_config.test_data_path
+            )
+        except Exception as e:
+            raise CustomException(e,sys)
 
 
