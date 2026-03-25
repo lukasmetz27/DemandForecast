@@ -23,8 +23,8 @@ class DataIngestion:
             df = pd.read_csv("notebooks/data/demand_forecasting.csv")
             logging.info("Read the dataset as dataframe")
 
-            os.makedirs(os.pathdirname(self.ingestion_config.train_data_path), exist_ok=True)
-            df.to_csv(self.ingestion_config.train_data_path,index=False, header=True)
+            os.makedirs(os.path.dirname(self.ingestion_config.train_data_path), exist_ok=True)
+            df.to_csv(self.ingestion_config.raw_data_path,index=False, header=True)
             logging.info("train test split initiated")
             train_set,test_set = train_test_split(df,test_size=0.2,random_state=42)
 
@@ -41,7 +41,7 @@ class DataIngestion:
             raise CustomException(e,sys)
         
 
-if "__name___" == "__main__":
+if __name__ == "__main__":
     obj = DataIngestion()
     obj.initiate_data_ingestion()
 
